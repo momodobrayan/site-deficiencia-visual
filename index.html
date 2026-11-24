@@ -1,303 +1,406 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-theme="default">
+<html lang="pt-BR" data-theme="dark-hc">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cozinha Sensorial — Receitas Acessíveis (WCAG AAA)</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Cozinha Acessível — Receitas sem Barreiras</title>
+  <style>
+    /* ==========================================================================
+       1. VARIÁVEIS DE TEMA E TIPOGRAFIA (WCAG AAA - Contraste >= 7:1)
+       ========================================================================== */
+    :root {
+      --font-scale: 1;
+      --line-height: 1.6;
+      --focus-ring: 4px solid #00ffff;
+      
+      /* Tema Padrão: Alto Contraste Escuro (Contraste > 18:1) */
+      --bg-primary: #050a14;
+      --bg-secondary: #0f1b33;
+      --text-primary: #ffffff;
+      --text-secondary: #e2e8f0;
+      --accent: #66d9ff;
+      --accent-text: #050a14;
+      --border-color: #ffffff;
+    }
+
+    [data-theme="yellow-black"] {
+      /* Tema Amarelo sobre Preto (Contraste 19.56:1) */
+      --bg-primary: #000000;
+      --bg-secondary: #141400;
+      --text-primary: #ffff00;
+      --text-secondary: #ffff66;
+      --accent: #ffff00;
+      --accent-text: #000000;
+      --border-color: #ffff00;
+      --focus-ring: 4px solid #ffffff;
+    }
+
+    [data-theme="light"] {
+      /* Tema Claro Alto Contraste (Contraste > 15:1) */
+      --bg-primary: #ffffff;
+      --bg-secondary: #f1f5f9;
+      --text-primary: #0a0a0a;
+      --text-secondary: #1e293b;
+      --accent: #003366;
+      --accent-text: #ffffff;
+      --border-color: #0a0a0a;
+      --focus-ring: 4px solid #b30000;
+    }
+
+    /* ==========================================================================
+       2. RESET E ESTILOS BASE
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: calc(18px * var(--font-scale));
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: var(--line-height);
+      overflow-x: hidden;
+    }
+
+    /* Anéis de Foco Rigorosos (WCAG AAA) */
+    :focus-visible {
+      outline: var(--focus-ring);
+      outline-offset: 4px;
+    }
+
+    /* Skip Link */
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 16px;
+      background: var(--accent);
+      color: var(--accent-text);
+      padding: 16px 24px;
+      font-weight: 700;
+      text-decoration: none;
+      border: 3px solid var(--border-color);
+      z-index: 1000;
+      border-radius: 4px;
+    }
+
+    .skip-link:focus {
+      top: 16px;
+    }
+
+    /* Classe utilitária apenas para leitores de tela */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* ==========================================================================
+       3. LAYOUT DE COLUNA ÚNICA E COMPONENTES GRANDES (>= 48x48px)
+       ========================================================================== */
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 1.25rem;
+    }
+
+    header {
+      background-color: var(--bg-secondary);
+      border-bottom: 3px solid var(--border-color);
+      padding: 1rem 0;
+    }
+
+    .a11y-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .toolbar-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    button, .btn {
+      min-height: 52px;
+      min-width: 52px;
+      padding: 0.75rem 1.25rem;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: inherit;
+      color: var(--text-primary);
+      background-color: var(--bg-primary);
+      border: 3px solid var(--border-color);
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      text-align: center;
+    }
+
+    button:hover, button[aria-pressed="true"] {
+      background-color: var(--accent);
+      color: var(--accent-text);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin: 0.5rem 0 1rem 0;
+      line-height: 1.25;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin: 2rem 0 1rem 0;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      margin: 1.25rem 0 0.75rem 0;
+    }
+
+    /* Busca e Inputs */
+    .search-box {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin: 1.5rem 0;
+      background-color: var(--bg-secondary);
+      padding: 1.25rem;
+      border: 3px solid var(--border-color);
+      border-radius: 8px;
+    }
+
+    .search-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    input[type="search"], select {
+      min-height: 54px;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      font-family: inherit;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      border: 3px solid var(--border-color);
+      border-radius: 6px;
+      flex: 1;
+    }
+
+    /* Categorias */
+    .category-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0;
+    }
+
+    /* Cards de Receita (Coluna Única) */
+    .recipe-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      list-style: none;
+      padding: 0;
+    }
+
+    .recipe-card {
+      background-color: var(--bg-secondary);
+      border: 3px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+    }
+
+    .recipe-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-weight: 700;
+      margin: 0.75rem 0;
+    }
+
+    /* ==========================================================================
+       4. PÁGINA DA RECEITA E MODO COZINHA
+       ========================================================================== */
+    .audio-panel {
+      background-color: var(--bg-secondary);
+      border: 3px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 1.5rem 0;
+    }
+
+    .audio-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    /* Checkboxes Gigantes de Ingredientes */
+    .ingredient-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .ingredient-item label {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      min-height: 56px;
+      background-color: var(--bg-secondary);
+      border: 3px solid var(--border-color);
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .ingredient-item input[type="checkbox"] {
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .ingredient-item input[type="checkbox"]:checked + span {
+      text-decoration: line-through;
+      opacity: 0.8;
+    }
+
+    /* Modo Passo a Passo Guiado (Tela Cheia) */
+    .guided-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      z-index: 900;
+      overflow-y: auto;
+      padding: 1.5rem;
+      display: none;
+    }
+
+    .guided-overlay.active {
+      display: block;
+    }
+
+    .guided-container {
+      max-width: 820px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .step-card {
+      background-color: var(--bg-secondary);
+      border: 4px solid var(--border-color);
+      border-radius: 10px;
+      padding: 2rem 1.5rem;
+      font-size: 1.25rem;
+    }
+
+    .sensory-badge {
+      display: inline-block;
+      background-color: var(--accent);
+      color: var(--accent-text);
+      padding: 0.4rem 0.8rem;
+      font-weight: 700;
+      border-radius: 4px;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .guided-nav {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .guided-nav button {
+      min-height: 68px;
+      font-size: 1.15rem;
+    }
+
+    .timer-box {
+      background-color: var(--bg-secondary);
+      border: 3px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .timer-display {
+      font-size: 1.75rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    footer {
+      margin-top: 4rem;
+      padding: 2rem 0;
+      border-top: 3px solid var(--border-color);
+      background-color: var(--bg-secondary);
+    }
+
+    @media (max-width: 600px) {
+      .guided-nav {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!-- Link de salto rápido para leitores de tela e teclado -->
-  <a href="#conteudo-principal" class="skip-link">Pular para o conteúdo principal</a>
 
-  <!-- Região de anúncios dinâmicos para leitores de tela -->
-  <div id="sr-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
-
-  <!-- Barra de Acessibilidade Fixa no Topo -->
-  <aside aria-label="Ferramentas de Acessibilidade" class="a11y-bar">
-    <div class="container a11y-controls">
-      <div role="group" aria-label="Temas visuais" class="control-group">
-        <span class="control-label" id="label-tema">Tema:</span>
-        <button type="button" class="btn-a11y" data-theme-btn="default" aria-pressed="true">Padrão</button>
-        <button type="button" class="btn-a11y" data-theme-btn="high-contrast" aria-pressed="false">Alto Contraste</button>
-        <button type="button" class="btn-a11y" data-theme-btn="dark" aria-pressed="false">Noturno</button>
-      </div>
-
-      <div role="group" aria-label="Tamanho do texto" class="control-group">
-        <span class="control-label">Fonte:</span>
-        <button type="button" id="btn-font-decrease" class="btn-a11y" aria-label="Diminuir tamanho da fonte">A-</button>
-        <button type="button" id="btn-font-reset" class="btn-a11y" aria-label="Restaurar tamanho padrão da fonte">100%</button>
-        <button type="button" id="btn-font-increase" class="btn-a11y" aria-label="Aumentar tamanho da fonte">A+</button>
-      </div>
-
-      <div role="group" aria-label="Espaçamento entre linhas" class="control-group">
-        <button type="button" id="btn-line-height" class="btn-a11y" aria-pressed="false">
-          Espaçamento Amplo
-        </button>
-      </div>
-    </div>
-  </aside>
-
-  <!-- Cabeçalho Principal -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <div class="brand">
-        <h1><a href="#inicio" id="logo-link">Cozinha Sensorial</a></h1>
-        <p class="tagline">Receitas guiadas por aromas, texturas, tempos e voz.</p>
-      </div>
-
-      <nav aria-label="Navegação Principal" class="main-nav">
-        <ul>
-          <li><button type="button" class="nav-btn active" data-view="explorar">Explorar Receitas</button></li>
-          <li><button type="button" class="nav-btn" data-view="planejador">Planejador e Lista (<span id="count-planejador">0</span>)</button></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Conteúdo Principal -->
-  <main id="conteudo-principal" class="container" tabindex="-1">
-
-    <!-- VIEW 1: EXPLORAR RECEITAS -->
-    <section id="view-explorar" aria-labelledby="titulo-explorar">
-      <h2 id="titulo-explorar">Encontre sua próxima receita</h2>
-
-      <!-- Busca Inteligente e Por Despensa -->
-      <div class="search-panel">
-        <form id="form-busca" role="search" aria-label="Buscar receitas por nome ou ingredientes">
-          <div class="form-row">
-            <div class="field-group">
-              <label for="input-busca">Buscar por nome da receita:</label>
-              <input type="search" id="input-busca" placeholder="Ex: Bolo de fubá, Frango na Airfryer...">
-            </div>
-
-            <div class="field-group">
-              <label for="input-despensa">O que tenho em casa (separe por vírgula):</label>
-              <input type="text" id="input-despensa" placeholder="Ex: ovo, fubá, leite, frango">
-            </div>
-          </div>
-
-          <div class="filter-actions">
-            <button type="submit" class="btn-primary">Filtrar Receitas</button>
-            <button type="button" id="btn-limpar-filtros" class="btn-secondary">Limpar Filtros</button>
-          </div>
-        </form>
-
-        <!-- Categorias e Restrições Alimentares -->
-        <div class="filters-grid">
-          <fieldset class="filter-fieldset">
-            <legend>Categorias</legend>
-            <div class="chip-group" id="filtro-categorias">
-              <button type="button" class="chip active" data-cat="todas" aria-pressed="true">Todas</button>
-              <button type="button" class="chip" data-cat="Aves" aria-pressed="false">Aves</button>
-              <button type="button" class="chip" data-cat="Carnes" aria-pressed="false">Carnes</button>
-              <button type="button" class="chip" data-cat="Massas" aria-pressed="false">Massas</button>
-              <button type="button" class="chip" data-cat="Bolos" aria-pressed="false">Bolos</button>
-              <button type="button" class="chip" data-cat="Doces" aria-pressed="false">Doces</button>
-              <button type="button" class="chip" data-cat="Pães" aria-pressed="false">Pães</button>
-              <button type="button" class="chip" data-cat="Airfryer" aria-pressed="false">Airfryer</button>
-            </div>
-          </fieldset>
-
-          <fieldset class="filter-fieldset">
-            <legend>Restrições Alimentares</legend>
-            <div class="checkbox-group" id="filtro-restricoes">
-              <label class="checkbox-label">
-                <input type="checkbox" value="Sem Glúten"> Sem Glúten
-              </label>
-              <label class="checkbox-label">
-                <input type="checkbox" value="Sem Lactose"> Sem Lactose
-              </label>
-              <label class="checkbox-label">
-                <input type="checkbox" value="Vegana"> Vegana
-              </label>
-              <label class="checkbox-label">
-                <input type="checkbox" value="Low Carb"> Low Carb
-              </label>
-            </div>
-          </fieldset>
-        </div>
-      </div>
-
-      <!-- Resultados -->
-      <section aria-labelledby="titulo-resultados" class="results-section">
-        <h3 id="titulo-resultados">Receitas Disponíveis (<span id="total-resultados">0</span>)</h3>
-        <div id="lista-receitas" class="recipe-grid"></div>
-      </section>
-    </section>
-
-    <!-- VIEW 2: DETALHES DA RECEITA + MODO COZINHA POR VOZ -->
-    <article id="view-receita" class="hidden" aria-labelledby="receita-titulo">
-      <button type="button" id="btn-voltar" class="btn-secondary">← Voltar para a lista de receitas</button>
-
-      <header class="recipe-header">
-        <span id="receita-categoria" class="badge">Categoria</span>
-        <h2 id="receita-titulo">Título da Receita</h2>
-        <p id="receita-descricao" class="lead"></p>
-
-        <div class="recipe-actions-top">
-          <button type="button" id="btn-ativar-voz" class="btn-voice-hero" aria-expanded="false">
-            Ativar Modo Cozinha Guiado por Áudio (Mãos Livres)
-          </button>
-          <button type="button" id="btn-salvar-planejador" class="btn-secondary">
-            + Adicionar ao Planejador Semanal
-          </button>
-        </div>
-      </header>
-
-      <!-- Painel do Modo Cozinha por Voz -->
-      <section id="painel-voz" class="voice-panel hidden" aria-labelledby="titulo-modo-voz" role="region">
-        <h3 id="titulo-modo-voz">Modo Cozinha Guiado por Áudio Ativo</h3>
-        <p class="voice-instructions">
-          <strong>Comandos de voz:</strong> Diga <em>"Próximo"</em>, <em>"Anterior"</em>, <em>"Repetir"</em>, <em>"Ingredientes"</em> ou <em>"Parar"</em>.
-          <br><strong>Atalhos de teclado:</strong> Seta Direita (Próximo), Seta Esquerda (Anterior), Tecla R (Repetir), Tecla I (Ingredientes).
-        </p>
-
-        <div class="voice-status" aria-live="polite">
-          <p><strong>Passo atual (<span id="voz-passo-num">1</span> de <span id="voz-passo-total">5</span>):</strong></p>
-          <p id="voz-texto-atual" class="voice-current-text"></p>
-          <p id="voz-status-mic" class="mic-status">Status do microfone: Inativo</p>
-        </div>
-
-        <div class="voice-controls">
-          <button type="button" id="voz-btn-anterior" class="btn-secondary">Passo Anterior</button>
-          <button type="button" id="voz-btn-repetir" class="btn-secondary">Repetir Passo</button>
-          <button type="button" id="voz-btn-proximo" class="btn-primary">Próximo Passo</button>
-          <button type="button" id="voz-btn-ingredientes" class="btn-secondary">Ouvir Ingredientes</button>
-          <button type="button" id="voz-btn-mic" class="btn-secondary" aria-pressed="false">Ligar Microfone</button>
-          <button type="button" id="voz-btn-fechar" class="btn-danger">Encerrar Modo Cozinha</button>
-        </div>
-      </section>
-
-      <!-- Imagem com descrição sensorial detalhada -->
-      <figure class="recipe-figure">
-        <img id="receita-img" src="" alt="">
-        <figcaption id="receita-legenda"></figcaption>
-      </figure>
-
-      <!-- Ficha Técnica Antes dos Ingredientes -->
-      <section aria-labelledby="titulo-ficha" class="tech-sheet">
-        <h3 id="titulo-ficha">Ficha Técnica e Informação Nutricional</h3>
-        <dl class="tech-grid" id="receita-ficha"></dl>
-      </section>
-
-      <!-- Ingredientes -->
-      <section aria-labelledby="titulo-ingredientes" class="recipe-section">
-        <h3 id="titulo-ingredientes">Ingredientes</h3>
-        <ul id="receita-ingredientes" class="checklist"></ul>
-      </section>
-
-      <!-- Modo de Preparo Multissensorial -->
-      <section aria-labelledby="titulo-preparo" class="recipe-section">
-        <h3 id="titulo-preparo">Modo de Preparo Sensorial</h3>
-        <ol id="receita-passos" class="steps-list"></ol>
-      </section>
-    </article>
-
-    <!-- VIEW 3: PLANEJADOR SEMANAL E LISTA DE COMPRAS -->
-    <section id="view-planejador" class="hidden" aria-labelledby="titulo-planejador">
-      <h2 id="titulo-planejador">Planejador Semanal e Lista de Compras</h2>
-      <p>Organize suas refeições da semana. A lista de compras é atualizada automaticamente e dividida por corredores do mercado.</p>
-
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Receita Acessível - Portal de Culinária Inclusiva (WCAG AAA)</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+  <!-- Skip Link (Visível ao focar via teclado) -->
   <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
 
-  <!-- Região de avisos em tempo real para leitores de tela -->
-  <div id="live-announcer" class="sr-only" aria-live="polite"></div>
+  <!-- Região Live para Feedback Imediato a Leitores de Tela -->
+  <div id="live-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
-  <!-- Barra de Acessibilidade Fixa -->
-  <header class="a11y-bar" aria-label="Barra de ferramentas de acessibilidade">
-    <div class="a11y-group" role="group" aria-label="Temas de contraste">
-      <button type="button" data-theme-btn="default" aria-pressed="true">Tema Padrão</button>
-      <button type="button" data-theme-btn="dark" aria-pressed="false">Modo Noturno</button>
-      <button type="button" data-theme-btn="high-contrast" aria-pressed="false">Alto Contraste</button>
-    </div>
-
-    <div class="a11y-group" role="group" aria-label="Tamanho do texto e espaçamento">
-      <button type="button" id="font-decrease" aria-label="Diminuir tamanho da fonte">A-</button>
-      <button type="button" id="font-increase" aria-label="Aumentar tamanho da fonte">A+</button>
-      <button type="button" id="line-height-toggle" aria-pressed="false">Espaçamento Amplo</button>
-    </div>
-  </header>
-
-  <div class="container">
-    <!-- Cabeçalho e Navegação -->
-    <div role="banner">
-      <h1>Receita Acessível</h1>
-      <p>Culinária autônoma com instruções multissensoriais e comando de voz.</p>
-    </div>
-
-    <nav class="main-nav" aria-label="Categorias principais">
-      <ul>
-        <li><button type="button" class="category-btn" data-category="todas" aria-pressed="true">Todas</button></li>
-        <li><button type="button" class="category-btn" data-category="Aves" aria-pressed="false">Aves</button></li>
-        <li><button type="button" class="category-btn" data-category="Massas" aria-pressed="false">Massas</button></li>
-        <li><button type="button" class="category-btn" data-category="Bolos" aria-pressed="false">Bolos</button></li>
-        <li><button type="button" class="category-btn" data-category="Airfryer" aria-pressed="false">Airfryer</button></li>
-      </ul>
-    </nav>
-
-    <!-- Conteúdo Principal -->
-    <main id="main-content" tabindex="-1">
-      <!-- Busca Inteligente e Filtro de Despensa -->
-      <section class="search-section" aria-labelledby="search-heading">
-        <h2 id="search-heading">Busca Inteligente e Despensa ("O que tenho em casa")</h2>
-        <div class="search-form">
-          <label for="search-input" class="sr-only">Buscar receita ou ingrediente</label>
-          <input type="search" id="search-input" placeholder="Digite um prato ou ingrediente (ex: frango, banana)...">
-          
-          <label for="diet-filter" class="sr-only">Restrição alimentar</label>
-          <select id="diet-filter">
-            <option value="todas">Todas as dietas</option>
-            <option value="Sem Glúten">Sem Glúten</option>
-            <option value="Sem Lactose">Sem Lactose</option>
-            <option value="Vegana">Vegana</option>
-          </select>
-        </div>
-
-        <div class="pantry-tags" role="group" aria-label="Ingredientes rápidos na despensa">
-          <span>Na minha despensa:</span>
-          <button type="button" class="pantry-btn" data-ingredient="ovo" aria-pressed="false">Ovo</button>
-          <button type="button" class="pantry-btn" data-ingredient="banana" aria-pressed="false">Banana</button>
-          <button type="button" class="pantry-btn" data-ingredient="frango" aria-pressed="false">Frango</button>
-          <button type="button" class="pantry-btn" data-ingredient="aveia" aria-pressed="false">Aveia</button>
-        </div>
-      </section>
-
-      <!-- Lista de Receitas -->
-      <section aria-labelledby="recipes-heading">
-        <h2 id="recipes-heading">Receitas Disponíveis</h2>
-        <div id="recipe-list" class="recipe-grid"></div>
-      </section>
-
-      <!-- Detalhes da Receita e Modo Cozinha por Voz -->
-      <section id="recipe-detail-section" hidden aria-labelledby="detail-title">
-        <button type="button" id="back-to-list">Voltar para a lista de receitas</button>
-        <article id="recipe-detail-content"></article>
-      </section>
-
-      <!-- Planejador Semanal e Lista de Compras -->
-      <section aria-labelledby="planner-heading">
-        <h2 id="planner-heading">Planejador Semanal e Lista de Compras</h2>
-        <p id="saved-recipes-summary">Nenhuma receita adicionada ao cardápio ainda.</p>
-        <button type="button" id="clear-planner">Limpar Cardápio e Lista</button>
-        <div id="shopping-list-container"></div>
-      </section>
-    </main>
-  </div>
-
-  <footer class="container">
-    <p>Portal desenvolvido sob as diretrizes WCAG 2.1 Nível AAA.</p>
-  </footer>
-
-  <script src="app.js"></script>
-</body>
-</html>
+  <header>
+    <div class="container">
+      <nav aria-label="Configurações de Acessibilidade Visual">
+        <div class="a11y-toolbar">
+          <div class="toolbar-group" role="group" aria-label="Tema de Alto Contraste">
+            <button type="button" id="theme-dark" aria-pressed="true" onclick="setTheme('dark-hc', this)">
+              Modo Alto Contraste Escuro
+            </button>
