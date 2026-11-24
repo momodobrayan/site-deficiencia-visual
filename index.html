@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="default">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cozinha Sensorial — Receitas Acessíveis (WCAG AAA)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Link de salto rápido para leitores de tela e teclado -->
+  <a href="#conteudo-principal" class="skip-link">Pular para o conteúdo principal</a>
+
+  <!-- Região de anúncios dinâmicos para leitores de tela -->
+  <div id="sr-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Barra de Acessibilidade Fixa no Topo -->
+  <aside aria-label="Ferramentas de Acessibilidade" class="a11y-bar">
+    <div class="container a11y-controls">
+      <div role="group" aria-label="Temas visuais" class="control-group">
+        <span class="control-label" id="label-tema">Tema:</span>
+        <button type="button" class="btn-a11y" data-theme-btn="default" aria-pressed="true">Padrão</button>
+        <button type="button" class="btn-a11y" data-theme-btn="high-contrast" aria-pressed="false">Alto Contraste</button>
+        <button type="button" class="btn-a11y" data-theme-btn="dark" aria-pressed="false">Noturno</button>
+      </div>
+
+      <div role="group" aria-label="Tamanho do texto" class="control-group">
+        <span class="control-label">Fonte:</span>
+        <button type="button" id="btn-font-decrease" class="btn-a11y" aria-label="Diminuir tamanho da fonte">A-</button>
+        <button type="button" id="btn-font-reset" class="btn-a11y" aria-label="Restaurar tamanho padrão da fonte">100%</button>
+        <button type="button" id="btn-font-increase" class="btn-a11y" aria-label="Aumentar tamanho da fonte">A+</button>
+      </div>
+
+      <div role="group" aria-label="Espaçamento entre linhas" class="control-group">
+        <button type="button" id="btn-line-height" class="btn-a11y" aria-pressed="false">
+          Espaçamento Amplo
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Cabeçalho Principal -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <h1><a href="#inicio" id="logo-link">Cozinha Sensorial</a></h1>
+        <p class="tagline">Receitas guiadas por aromas, texturas, tempos e voz.</p>
+      </div>
+
+      <nav aria-label="Navegação Principal" class="main-nav">
+        <ul>
+          <li><button type="button" class="nav-btn active" data-view="explorar">Explorar Receitas</button></li>
+          <li><button type="button" class="nav-btn" data-view="planejador">Planejador e Lista (<span id="count-planejador">0</span>)</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main id="conteudo-principal" class="container" tabindex="-1">
+
+    <!-- VIEW 1: EXPLORAR RECEITAS -->
+    <section id="view-explorar" aria-labelledby="titulo-explorar">
+      <h2 id="titulo-explorar">Encontre sua próxima receita</h2>
+
+      <!-- Busca Inteligente e Por Despensa -->
+      <div class="search-panel">
+        <form id="form-busca" role="search" aria-label="Buscar receitas por nome ou ingredientes">
+          <div class="form-row">
+            <div class="field-group">
+              <label for="input-busca">Buscar por nome da receita:</label>
+              <input type="search" id="input-busca" placeholder="Ex: Bolo de fubá, Frango na Airfryer...">
+            </div>
+
+            <div class="field-group">
+              <label for="input-despensa">O que tenho em casa (separe por vírgula):</label>
+              <input type="text" id="input-despensa" placeholder="Ex: ovo, fubá, leite, frango">
+            </div>
+          </div>
+
+          <div class="filter-actions">
+            <button type="submit" class="btn-primary">Filtrar Receitas</button>
+            <button type="button" id="btn-limpar-filtros" class="btn-secondary">Limpar Filtros</button>
+          </div>
+        </form>
+
+        <!-- Categorias e Restrições Alimentares -->
+        <div class="filters-grid">
+          <fieldset class="filter-fieldset">
+            <legend>Categorias</legend>
+            <div class="chip-group" id="filtro-categorias">
+              <button type="button" class="chip active" data-cat="todas" aria-pressed="true">Todas</button>
+              <button type="button" class="chip" data-cat="Aves" aria-pressed="false">Aves</button>
+              <button type="button" class="chip" data-cat="Carnes" aria-pressed="false">Carnes</button>
+              <button type="button" class="chip" data-cat="Massas" aria-pressed="false">Massas</button>
+              <button type="button" class="chip" data-cat="Bolos" aria-pressed="false">Bolos</button>
+              <button type="button" class="chip" data-cat="Doces" aria-pressed="false">Doces</button>
+              <button type="button" class="chip" data-cat="Pães" aria-pressed="false">Pães</button>
+              <button type="button" class="chip" data-cat="Airfryer" aria-pressed="false">Airfryer</button>
+            </div>
+          </fieldset>
+
+          <fieldset class="filter-fieldset">
+            <legend>Restrições Alimentares</legend>
+            <div class="checkbox-group" id="filtro-restricoes">
+              <label class="checkbox-label">
+                <input type="checkbox" value="Sem Glúten"> Sem Glúten
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" value="Sem Lactose"> Sem Lactose
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" value="Vegana"> Vegana
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" value="Low Carb"> Low Carb
+              </label>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+
+      <!-- Resultados -->
+      <section aria-labelledby="titulo-resultados" class="results-section">
+        <h3 id="titulo-resultados">Receitas Disponíveis (<span id="total-resultados">0</span>)</h3>
+        <div id="lista-receitas" class="recipe-grid"></div>
+      </section>
+    </section>
+
+    <!-- VIEW 2: DETALHES DA RECEITA + MODO COZINHA POR VOZ -->
+    <article id="view-receita" class="hidden" aria-labelledby="receita-titulo">
+      <button type="button" id="btn-voltar" class="btn-secondary">← Voltar para a lista de receitas</button>
+
+      <header class="recipe-header">
+        <span id="receita-categoria" class="badge">Categoria</span>
+        <h2 id="receita-titulo">Título da Receita</h2>
+        <p id="receita-descricao" class="lead"></p>
+
+        <div class="recipe-actions-top">
+          <button type="button" id="btn-ativar-voz" class="btn-voice-hero" aria-expanded="false">
+            Ativar Modo Cozinha Guiado por Áudio (Mãos Livres)
+          </button>
+          <button type="button" id="btn-salvar-planejador" class="btn-secondary">
+            + Adicionar ao Planejador Semanal
+          </button>
+        </div>
+      </header>
+
+      <!-- Painel do Modo Cozinha por Voz -->
+      <section id="painel-voz" class="voice-panel hidden" aria-labelledby="titulo-modo-voz" role="region">
+        <h3 id="titulo-modo-voz">Modo Cozinha Guiado por Áudio Ativo</h3>
+        <p class="voice-instructions">
+          <strong>Comandos de voz:</strong> Diga <em>"Próximo"</em>, <em>"Anterior"</em>, <em>"Repetir"</em>, <em>"Ingredientes"</em> ou <em>"Parar"</em>.
+          <br><strong>Atalhos de teclado:</strong> Seta Direita (Próximo), Seta Esquerda (Anterior), Tecla R (Repetir), Tecla I (Ingredientes).
+        </p>
+
+        <div class="voice-status" aria-live="polite">
+          <p><strong>Passo atual (<span id="voz-passo-num">1</span> de <span id="voz-passo-total">5</span>):</strong></p>
+          <p id="voz-texto-atual" class="voice-current-text"></p>
+          <p id="voz-status-mic" class="mic-status">Status do microfone: Inativo</p>
+        </div>
+
+        <div class="voice-controls">
+          <button type="button" id="voz-btn-anterior" class="btn-secondary">Passo Anterior</button>
+          <button type="button" id="voz-btn-repetir" class="btn-secondary">Repetir Passo</button>
+          <button type="button" id="voz-btn-proximo" class="btn-primary">Próximo Passo</button>
+          <button type="button" id="voz-btn-ingredientes" class="btn-secondary">Ouvir Ingredientes</button>
+          <button type="button" id="voz-btn-mic" class="btn-secondary" aria-pressed="false">Ligar Microfone</button>
+          <button type="button" id="voz-btn-fechar" class="btn-danger">Encerrar Modo Cozinha</button>
+        </div>
+      </section>
+
+      <!-- Imagem com descrição sensorial detalhada -->
+      <figure class="recipe-figure">
+        <img id="receita-img" src="" alt="">
+        <figcaption id="receita-legenda"></figcaption>
+      </figure>
+
+      <!-- Ficha Técnica Antes dos Ingredientes -->
+      <section aria-labelledby="titulo-ficha" class="tech-sheet">
+        <h3 id="titulo-ficha">Ficha Técnica e Informação Nutricional</h3>
+        <dl class="tech-grid" id="receita-ficha"></dl>
+      </section>
+
+      <!-- Ingredientes -->
+      <section aria-labelledby="titulo-ingredientes" class="recipe-section">
+        <h3 id="titulo-ingredientes">Ingredientes</h3>
+        <ul id="receita-ingredientes" class="checklist"></ul>
+      </section>
+
+      <!-- Modo de Preparo Multissensorial -->
+      <section aria-labelledby="titulo-preparo" class="recipe-section">
+        <h3 id="titulo-preparo">Modo de Preparo Sensorial</h3>
+        <ol id="receita-passos" class="steps-list"></ol>
+      </section>
+    </article>
+
+    <!-- VIEW 3: PLANEJADOR SEMANAL E LISTA DE COMPRAS -->
+    <section id="view-planejador" class="hidden" aria-labelledby="titulo-planejador">
+      <h2 id="titulo-planejador">Planejador Semanal e Lista de Compras</h2>
+      <p>Organize suas refeições da semana. A lista de compras é atualizada automaticamente e dividida por corredores do mercado.</p>
+
